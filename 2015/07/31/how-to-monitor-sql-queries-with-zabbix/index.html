@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Clouds, Virtualization and something more..."><meta name=Author content="Volodymyr Vrublevskyy"><meta name=keywords content="IT Talks"><link rel=stylesheet href=https://vovando.dev/css/syntax.css><link rel=stylesheet href=https://vovando.dev/css/style.css><script src=https://kit.fontawesome.com/1b7478c139.js crossorigin=anonymous></script><title>IT Talks</title></head><body><aside id=sidenav><header><a href=https://vovando.dev/><img src=https://vovando.dev/avatar.png alt=avatar></a>
+<a id=branding href=https://vovando.dev/>IT Talks</a></header><nav><a href=/><i class="fas fa-home fa-sm"></i><span>whoami</span></a>
+<a href=/posts><i class="fas fa-keyboard fa-ms"></i><span>blog</span></a>
+<a href=/tags><i class="fas fa-tags fa-ms"></i><span>tags</span></a>
+<a href=https://github.com/vovandodev target=_blank><i class="fab fa-github fa-ms"></i><span>github</span></a>
+<a href=/index.xml><i class="fas fa-rss fa-ms"></i><span>RSS</span></a>
+<a href=/contact><i class="far fa-envelope"></i><span>contact</span></a></nav></aside><main id=main><a href=javascript:void(0) id=closebtn onclick=navToggle()><i class="fas fa-bars fa-lg"></i></a><div class=content><h1 id=title>How to monitor sql queries with zabbix</h1><nav id=TableOfContents></nav><p>yum -y install unixODBC unixODBC-devel</p><p>odbcinst.ini is used to list the installed ODBC database drivers:</p><p><em>########################################################</em></p><p><em># Example driver definitions</em></p><p>_# Driver from the postgresql-odbc package</p><p># Setup from the unixODBC package</p><p>[PostgreSQL]</p><p>Description     = ODBC for PostgreSQL</p><p>Driver          = /usr/lib/psqlodbc.so</p><p>Setup           = /usr/lib/libodbcpsqlS.so</p><p>Driver64        = /usr/lib64/psqlodbc.so</p><p>Setup64         = /usr/lib64/libodbcpsqlS.so</p><p>FileUsage       = 1</p><p>_# Driver from the mysql-connector-odbc package</p><p># Setup from the unixODBC package</p><p>[MySQL]</p><p>Description     = ODBC for MySQL</p><p>Driver          = /usr/lib/libmyodbc5.so</p><p>Setup           = /usr/lib/libodbcmyS.so</p><p>Driver64        = /usr/lib64/libmyodbc5.so</p><p>Setup64         = /usr/lib64/libodbcmyS.so</p><p>FileUsage       = 1</p><p><em>#########################################################</em></p><p> </p><p>odbc.ini is used to define data sources:</p><p><em>#########################################################</em></p><p>[db.hostname.com]</p><p>Driver = MySQL</p><p>DATABASE = database.name</p><p>PWD = password.for.dbuser</p><p>SERVER = db.server.ip</p><p>PORT = 3306</p><p>UID = dbuser</p><p><em>#########################################################</em></p><p> </p><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  &lt;strong&gt;&lt;font style=&quot;background-color: #cccccc&quot;&gt;Description&lt;/font&gt;&lt;/strong&gt;
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Data source name (DSN).
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database driver name &amp;#8211; as specified in odbcinst.ini
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database name.
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database user password.
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database server IP/&lt;abbr&gt;DNS&lt;/abbr&gt;.
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database connection port.
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td valign=&quot;top&quot; width=&quot;434&quot;&gt;
+  Database user for connection.
+&lt;/td&gt;
+</code></pre><p>To verify if ODBC connection is working successfully, a connection to database should be tested. That can be done with the isql utility (included in the unixODBC package):</p><p># isql  db.hostname.com</p><p></p><p> </p><p>Voilà!</p><div class=nav-next-prev><div class=nav-prev><a href=https://vovando.dev/2015/07/30/cooking-with-chef-how-to-deploy-instance-on-aws-with-knife/><i class="fas fa-chevron-left"></i></a></div><a class=nav-top href=#>top</i></a><div class=nav-next><a href=https://vovando.dev/2015/08/05/passwordless-command-line-scripts-with-mysql-5-6/><i class="fas fa-chevron-right"></i></a></div></div></div><footer><div class=footer-content><div class=contact-info><div class=footer-mail><i class="far fa-envelope"></i><a href=mailto:hello@vovando.dev>hello@vovando.dev</a></div><div class=footer-phone><i class="fas fa-phone"></i>7777</div></div><p class="copyright meta">Copyright © 2013–2020, all rights reserved.</p></div></footer></main></body><script src=https://vovando.dev/js/navbutton.js></script></html>

@@ -1,0 +1,253 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Clouds, Virtualization and something more..."><meta name=Author content="Volodymyr Vrublevskyy"><meta name=keywords content="IT Talks"><link rel=stylesheet href=https://vovando.dev/css/syntax.css><link rel=stylesheet href=https://vovando.dev/css/style.css><script src=https://kit.fontawesome.com/1b7478c139.js crossorigin=anonymous></script><title>IT Talks</title></head><body><aside id=sidenav><header><a href=https://vovando.dev/><img src=https://vovando.dev/avatar.png alt=avatar></a>
+<a id=branding href=https://vovando.dev/>IT Talks</a></header><nav><a href=/><i class="fas fa-home fa-sm"></i><span>whoami</span></a>
+<a href=/posts><i class="fas fa-keyboard fa-ms"></i><span>blog</span></a>
+<a href=/tags><i class="fas fa-tags fa-ms"></i><span>tags</span></a>
+<a href=https://github.com/vovandodev target=_blank><i class="fab fa-github fa-ms"></i><span>github</span></a>
+<a href=/index.xml><i class="fas fa-rss fa-ms"></i><span>RSS</span></a>
+<a href=/contact><i class="far fa-envelope"></i><span>contact</span></a></nav></aside><main id=main><a href=javascript:void(0) id=closebtn onclick=navToggle()><i class="fas fa-bars fa-lg"></i></a><div class=content><h1 id=title>Installing Chef on Centos 6</h1><nav id=TableOfContents></nav><p>Today we will install chef server in our home lab based on proxmox 3.4.6. So we have installed server 2cpu, 2Gb memory, Centos 6.7</p><p>First of all I switched off selinux, and configured hostname of server in /etc/sysconfig/network and /etc/hosts</p><p>Let&rsquo;s go on:</p><p>#wget <a href=https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-12.1.2-1.el6.x86_64.rpm>https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-12.1.2-1.el6.x86_64.rpm</a></p><p># rpm -Uvh chef-server-core-12.1.2-1.el6.x86_64.rpm</p><p>#chef-server-ctl user-create vovando Volodymyr Vrublevskyy user@!!!.com [passrord] –filename /tmp/vovando.pem</p><p>#chef-server-ctl org-create vovando &ldquo;Vovandos Com&rdquo; –association_user vovando –filename /tmp/VOVANDO-validator.pem</p><p>Enable additional features of the Chef server! The packages may be downloaded directly as part of the installation process or they may be first downloaded to a local directory, and then installed.</p><pre><code>&lt;th class=&quot;head&quot; style=&quot;padding: 1px 8px 1px 5px; border-width: 0px; border-bottom-style: solid; border-bottom-color: rgb(255, 255, 255); background-color: rgb(125, 134, 140); color: rgb(255, 255, 255); border-top-left-radius: 8px; border-top-right-radius: 8px;&quot;&gt;
+  Command
+&lt;/th&gt;
+</code></pre><pre><code>&lt;td style=&quot;padding: 5px; border-width: 0px 0px 1px; border-bottom-style: dashed; border-bottom-color: rgb(125, 134, 140);&quot;&gt;
+  &lt;p class=&quot;first&quot; style=&quot;margin-top: 0px !important; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;&quot;&gt;
+    Use Chef management console to manage data bags, attributes, run-lists, roles, environments, and cookbooks from a web user interface.
+  &lt;/p&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    On the Chef server, run:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl install opscode-manage</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    and then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;last highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ opscode-manage-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td style=&quot;padding: 5px; border-width: 0px 0px 1px; border-bottom-style: dashed; border-bottom-color: rgb(125, 134, 140);&quot;&gt;
+  &lt;p class=&quot;first&quot; style=&quot;margin-top: 0px !important; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;&quot;&gt;
+    Use Chef push jobs to run jobs&amp;mdash;an action or a command to be executed&amp;mdash;against nodes independently of a chef-client run.
+  &lt;/p&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    On the Chef server, run:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl install opscode-push-jobs-server</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    and then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;last highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ opscode-push-jobs-server-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td style=&quot;padding: 5px; border-width: 0px 0px 1px; border-bottom-style: dashed; border-bottom-color: rgb(125, 134, 140);&quot;&gt;
+  &amp;nbsp;
+&lt;/td&gt;
+</code></pre><pre><code>&lt;td style=&quot;padding: 5px; border-width: 0px 0px 1px; border-bottom-style: dashed; border-bottom-color: rgb(125, 134, 140);&quot;&gt;
+  &lt;p class=&quot;first&quot; style=&quot;margin-top: 0px !important; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;&quot;&gt;
+    Use Chef reporting to keep track of what happens during every chef-client runs across all of the infrastructure being managed by Chef. Run Chef reporting with Chef management console to view reports from a web user interface.
+  &lt;/p&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    On the Chef server, run:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl install opscode-reporting</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ chef-server-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin: 0.8em 0px 0.5em;&quot;&gt;
+    and then:
+  &lt;/p&gt;
+  
+  &lt;div class=&quot;last highlight-ruby&quot;&gt;
+    &lt;div class=&quot;highlight&quot; style=&quot;background-color: rgb(248, 248, 248); background-position: initial initial; background-repeat: initial initial;&quot;&gt;
+      &lt;pre style=&quot;overflow-x: auto; overflow-y: hidden; font-family: Consolas, 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace; font-size: 0.95em; letter-spacing: 0.015em; line-height: 15.960000038146973px; padding: 0.5em; border: 0px solid rgb(216, 221, 227); background-color: rgb(235, 236, 241);&quot;&gt;
+</code></pre><p>$ opscode-reporting-ctl reconfigure</p><pre><code>      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+        &amp;nbsp;
+      &lt;/p&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;
+    
+    &lt;p&gt;
+      &amp;nbsp;
+    &lt;/p&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre><p>Done.</p><p><a href=http://noteits.net/wp-content/uploads/2015/08/Screen-Shot-2015-08-23-at-15.09.25.png></a> </p><div class=nav-next-prev><div class=nav-prev><a href=https://vovando.dev/2015/08/17/cannot-run-upgrade-script-on-host-during-upgrade-from-esxi-5-5-to-6-0/><i class="fas fa-chevron-left"></i></a></div><a class=nav-top href=#>top</i></a><div class=nav-next><a href=https://vovando.dev/2015/08/24/installing-workstation-for-managing-chef-server/><i class="fas fa-chevron-right"></i></a></div></div></div><footer><div class=footer-content><div class=contact-info><div class=footer-mail><i class="far fa-envelope"></i><a href=mailto:hello@vovando.dev>hello@vovando.dev</a></div><div class=footer-phone><i class="fas fa-phone"></i>7777</div></div><p class="copyright meta">Copyright © 2013–2020, all rights reserved.</p></div></footer></main></body><script src=https://vovando.dev/js/navbutton.js></script></html>

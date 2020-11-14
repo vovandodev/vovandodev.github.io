@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Clouds, Virtualization and something more..."><meta name=Author content="Volodymyr Vrublevskyy"><meta name=keywords content="IT Talks"><link rel=stylesheet href=https://vovando.dev/css/syntax.css><link rel=stylesheet href=https://vovando.dev/css/style.css><script src=https://kit.fontawesome.com/1b7478c139.js crossorigin=anonymous></script><title>IT Talks</title></head><body><aside id=sidenav><header><a href=https://vovando.dev/><img src=https://vovando.dev/avatar.png alt=avatar></a>
+<a id=branding href=https://vovando.dev/>IT Talks</a></header><nav><a href=/><i class="fas fa-home fa-sm"></i><span>whoami</span></a>
+<a href=/posts><i class="fas fa-keyboard fa-ms"></i><span>blog</span></a>
+<a href=/tags><i class="fas fa-tags fa-ms"></i><span>tags</span></a>
+<a href=https://github.com/vovandodev target=_blank><i class="fab fa-github fa-ms"></i><span>github</span></a>
+<a href=/index.xml><i class="fas fa-rss fa-ms"></i><span>RSS</span></a>
+<a href=/contact><i class="far fa-envelope"></i><span>contact</span></a></nav></aside><main id=main><a href=javascript:void(0) id=closebtn onclick=navToggle()><i class="fas fa-bars fa-lg"></i></a><div class=content><h1 id=title>How to install Python 2.7.6 on CentOS 6.3</h1><nav id=TableOfContents><ul><li><ul><li><a href=#how-to-install-python-276-on-centos-63><strong>How to install Python 2.7.6 on CentOS 6.3</strong></a></li><li><a href=#62-and-64-okay-too-probably-others>(6.2 and 6.4 okay too, probably others)</a></li><li><a href=#install-development-tools><strong>Install development tools</strong></a></li><li><a href=#download-compile-and-install-python><strong>Download, compile and install Python</strong></a></li></ul></li></ul></nav><h3 id=how-to-install-python-276-on-centos-63><strong>How to install Python 2.7.6 on CentOS 6.3</strong></h3><h3 id=62-and-64-okay-too-probably-others>(6.2 and 6.4 okay too, probably others)</h3><p>CentOS 6.2 ships with Python 2.6.6 and depends on that specific version. Be careful not to replace it or bad things will happen. If you need access to a newer version of Python you must compile it yourself and install it side-by-side with the system version.</p><p>Here are the steps necessary to install Python 2.7.6. Execute all the commands below as root. Either log in as root temporarily or use sudo.</p><h3 id=install-development-tools><strong>Install development tools</strong></h3><p>In order to compile Python you must first install the development tools:</p><pre><code>yum groupinstall &quot;Development tools&quot;
+</code></pre><p>You also need a few extra libs installed before compiling Python or else you will run into problems later when trying to install various packages:</p><pre><code>yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel
+</code></pre><h3 id=download-compile-and-install-python><strong>Download, compile and install Python</strong></h3><p>The –no-check-certificate is optional</p><pre><code>cd /opt
+wget --no-check-certificate https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+tar xf Python-2.7.6.tar.xz
+cd Python-2.7.6
+./configure --prefix=/usr/local
+make &amp;&amp; make altinstall
+</code></pre><p>It is important to use altinstall instead of install, otherwise, you will end up with two different versions of Python in the filesystem both named python.</p><p>(Depending on your version of wget, you may need to add the –no-check-certificate option to the wget command line.)</p><p>After running the commands above your newly installed Python 2.7.6 interpreter will be available as /usr/local/bin/python2.7 and the system version of Python 2.6.6 will be available as /usr/bin/python and /usr/bin/python2.6.</p><p>Check with:</p><pre><code>root@lg1:/opt/Python-2.7.6 ] ls -ltr /usr/bin/python*
+
+lrwxrwxrwx 1 root root    6 Nov 16  2002 /usr/bin/python2 -&gt; python
+-rwxr-xr-x 1 root root 1418 Jul 10  2013 /usr/bin/python2.6-config
+-rwxr-xr-x 2 root root 4864 Jul 10  2013 /usr/bin/python2.6
+-rwxr-xr-x 2 root root 4864 Jul 10  2013 /usr/bin/python
+lrwxrwxrwx 1 root root   16 Oct 24 15:39 /usr/bin/python-config -&gt; python2.6-config
+
+root@lg1:/opt/Python-2.7.6 ] ls -ltr /usr/local/bin/python*
+-rwxr-xr-x 1 root root 6214533 Mar 19 22:46 /usr/local/bin/python2.7
+-rwxr-xr-x 1 root root    1674 Mar 19 22:46 /usr/local/bin/python2.7-config
+</code></pre><p>If things don&rsquo;t look right, you might need to create a symbolic link in /usr/local/bin</p><pre><code>cd /usr/local/bin
+ls -ltr python*
+</code></pre><p>WARNING: don&rsquo;t do this before checking the $PATH for root. if it has /usr/local/bin before /usr/bin, it will see python2.7 first i.e.</p><pre><code>root@openstack h2o]# echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+</code></pre><p>If you add this link, do a &ldquo;which python&rdquo; for the user and for root. If root is pointing to /usr/local/bin/python, remove the link you just added, and figure out something else.</p><pre><code>ln -s /usr/local/bin/python2.7 /usr/local/bin/python
+</code></pre><p>final check:</p><pre><code>sudo sh
+root@lg1:~ ] which python
+/usr/bin/python
+root@lg1:/home/0xdiag ] python
+Python 2.6.6 (r266:84292, Jul 10 2013, 22:48:45) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-3)] on linux2
+root@lg1:~ ] exit
+
+sudo - user
+user@lg1:~ ] which python
+/usr/local/bin/python
+user@lg1:~ ] python
+Python 2.7.6 (default, Mar 19 2014, 22:45:29) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-4)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</code></pre><div class=nav-next-prev><div class=nav-prev><a href=https://vovando.dev/2016/02/09/reserved-ip-microsoft-azure/><i class="fas fa-chevron-left"></i></a></div><a class=nav-top href=#>top</i></a><div class=nav-next><a href=https://vovando.dev/2016/05/04/monitor-logs-in-real-time-with-log-io-on-centos-67/><i class="fas fa-chevron-right"></i></a></div></div></div><footer><div class=footer-content><div class=contact-info><div class=footer-mail><i class="far fa-envelope"></i><a href=mailto:hello@vovando.dev>hello@vovando.dev</a></div><div class=footer-phone><i class="fas fa-phone"></i>7777</div></div><p class="copyright meta">Copyright © 2013–2020, all rights reserved.</p></div></footer></main></body><script src=https://vovando.dev/js/navbutton.js></script></html>

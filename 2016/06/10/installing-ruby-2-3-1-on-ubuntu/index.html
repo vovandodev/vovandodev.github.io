@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Clouds, Virtualization and something more..."><meta name=Author content="Volodymyr Vrublevskyy"><meta name=keywords content="IT Talks"><link rel=stylesheet href=https://vovando.dev/css/syntax.css><link rel=stylesheet href=https://vovando.dev/css/style.css><script src=https://kit.fontawesome.com/1b7478c139.js crossorigin=anonymous></script><title>IT Talks</title></head><body><aside id=sidenav><header><a href=https://vovando.dev/><img src=https://vovando.dev/avatar.png alt=avatar></a>
+<a id=branding href=https://vovando.dev/>IT Talks</a></header><nav><a href=/><i class="fas fa-home fa-sm"></i><span>whoami</span></a>
+<a href=/posts><i class="fas fa-keyboard fa-ms"></i><span>blog</span></a>
+<a href=/tags><i class="fas fa-tags fa-ms"></i><span>tags</span></a>
+<a href=https://github.com/vovandodev target=_blank><i class="fab fa-github fa-ms"></i><span>github</span></a>
+<a href=/index.xml><i class="fas fa-rss fa-ms"></i><span>RSS</span></a>
+<a href=/contact><i class="far fa-envelope"></i><span>contact</span></a></nav></aside><main id=main><a href=javascript:void(0) id=closebtn onclick=navToggle()><i class="fas fa-bars fa-lg"></i></a><div class=content><h1 id=title>Installing Ruby 2.3.1 on Ubuntu</h1><nav id=TableOfContents><ul><li><a href=#installing-ruby-231-or-earlier>Installing Ruby 2.3.1 (or earlier).</a></li></ul></nav><p>We will be setting up a Ruby environment on Ubuntu.</p><h2 id=installing-ruby-231-or-earlier>Installing Ruby 2.3.1 (or earlier).</h2><p>{#ruby}</p><p>The first step is to install some dependencies for Ruby.</p><p>sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev</p><p>Next we&rsquo;re going to be installing Ruby using one of three methods. Each have their own benefits, most people prefer using rbenv these days, but if you&rsquo;re familiar with rvm you can follow those steps as well. I&rsquo;ve included instructions for installing from source as well, but in general, you&rsquo;ll want to choose either rbenv or rvm.</p><p>Installing with <code>rbenv</code> is a simple two step process. First you install <code>rbenv</code>, and then <code>ruby-build</code>:</p><pre><code>cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo &amp;#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&amp;#39; &gt;&gt; ~/.bashrc
+echo &amp;#39;eval &quot;$(rbenv init -)&quot;&amp;#39; &gt;&gt; ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo &amp;#39;export PATH=&quot;$HOME/.rbenv/plugins/ruby-build/bin:$PATH&quot;&amp;#39; &gt;&gt; ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+
+rbenv install 2.3.1
+rbenv global 2.3.1
+ruby -v
+</code></pre><p><strong>OUTPUT:</strong></p><p>root@ip-172-31-42-19:~# git clone <a href=https://github.com/rbenv/rbenv.git>https://github.com/rbenv/rbenv.git</a> ~/.rbenv<br>Cloning into &lsquo;/root/.rbenv&rsquo;…e<br>cho &lsquo;export PATH="$HOME/.rbenv/bin:$PATH"&rsquo; &#187; ~/.bashrc<br>echo &lsquo;eval &ldquo;$(rbenv init -)"&rsquo; &#187; ~/.bashrc<br>exec $SHELLremote: Counting objects: 2500, done.<br>remote: Total 2500 (delta 0), reused 0 (delta 0), pack-reused 2500<br>Receiving objects: 100% (2500/2500), 456.36 KiB | 365.00 KiB/s, done.<br>Resolving deltas: 100% (1546/1546), done.<br>Checking connectivity… done.<br>root@ip-172-31-42-19:~# echo &lsquo;export PATH="$HOME/.rbenv/bin:$PATH&rdquo;&rsquo; &#187; ~/.bashrc<br>root@ip-172-31-42-19:~# echo &lsquo;eval &ldquo;$(rbenv init -)"&rsquo; &#187; ~/.bashrc<br>root@ip-172-31-42-19:~# exec $SHELL<br>root@ip-172-31-42-19:~# git clone <a href=https://github.com/rbenv/ruby-build.git>https://github.com/rbenv/ruby-build.git</a> ~/.rbenv/plugins/ruby-build<br>eCloning into &lsquo;/root/.rbenv/plugins/ruby-build&rsquo;…<br>cho &lsquo;export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH&rdquo;&rsquo; &#187; ~/.bashrc<br>exec $SHELL<br>remote: Counting objects: 6454, done.<br>remote: Compressing objects: 100% (7/7), done.<br>remote: Total 6454 (delta 2), reused 0 (delta 0), pack-reused 6446<br>Receiving objects: 100% (6454/6454), 1.25 MiB | 560.00 KiB/s, done.<br>Resolving deltas: 100% (3720/3720), done.<br>Checking connectivity… done.<br>root@ip-172-31-42-19:~# echo &lsquo;export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"&rsquo; &#187; ~/.bashrc<br>root@ip-172-31-42-19:~# exec $SHELL<br>root@ip-172-31-42-19:~# git clone <a href=https://github.com/rbenv/rbenv-gem-rehash.git>https://github.com/rbenv/rbenv-gem-rehash.git</a> ~/.rbenv/plugins/rbenv-gem-rehash<br>Cloning into &lsquo;/root/.rbenv/plugins/rbenv-gem-rehash&rsquo;…<br>remote: Counting objects: 97, done.<br>remote: Total 97 (delta 0), reused 0 (delta 0), pack-reused 97<br>Unpacking objects: 100% (97/97), done.<br>Checking connectivity… done.<br>root@ip-172-31-42-19:~# rbenv install 2.3.1<br>rbenv global 2.3.1<br>ruby -vDownloading ruby-2.3.1.tar.bz2…<br>-> <a href=https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.bz2>https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.bz2</a></p><p>Installing ruby-2.3.1…</p><p>Installed ruby-2.3.1 to /root/.rbenv/versions/2.3.1</p><p>root@ip-172-31-42-19:~# rbenv global 2.3.1<br>root@ip-172-31-42-19:~# ruby -v<br>ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]<br>root@ip-172-31-42-19:~#</p><p><strong>Also you can use rvm and sorce code.</strong></p><p>The installation for <code>rvm</code> is pretty simple:</p><pre><code>sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm install 2.3.1
+rvm use 2.3.1 --default
+ruby -v
+</code></pre><p>Arguably the least useful Ruby setup for development is installing from source, but I thought I&rsquo;d give you the steps anyways:</p><pre><code>cd
+wget http://ftp.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz
+tar -xzvf ruby-2.3.1.tar.gz
+cd ruby-2.3.1/
+./configure
+make
+sudo make install
+ruby -v
+</code></pre><p><strong>The last step is to install Bundler</strong></p><pre><code>gem install bundler
+</code></pre><p>rbenv users need to run <code>rbenv rehash</code> after installing bundler.</p><div class=nav-next-prev><div class=nav-prev><a href=https://vovando.dev/2016/05/12/read-only-user-in-postgresql/><i class="fas fa-chevron-left"></i></a></div><a class=nav-top href=#>top</i></a><div class=nav-next><a href=https://vovando.dev/2016/07/05/solving-npm-error-cannot-find-module-are-we-there-yet/><i class="fas fa-chevron-right"></i></a></div></div></div><footer><div class=footer-content><div class=contact-info><div class=footer-mail><i class="far fa-envelope"></i><a href=mailto:hello@vovando.dev>hello@vovando.dev</a></div><div class=footer-phone><i class="fas fa-phone"></i>7777</div></div><p class="copyright meta">Copyright © 2013–2020, all rights reserved.</p></div></footer></main></body><script src=https://vovando.dev/js/navbutton.js></script></html>

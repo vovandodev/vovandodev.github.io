@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Clouds, Virtualization and something more..."><meta name=Author content="Volodymyr Vrublevskyy"><meta name=keywords content="IT Talks"><link rel=stylesheet href=https://vovando.dev/css/syntax.css><link rel=stylesheet href=https://vovando.dev/css/style.css><script src=https://kit.fontawesome.com/1b7478c139.js crossorigin=anonymous></script><title>IT Talks</title></head><body><aside id=sidenav><header><a href=https://vovando.dev/><img src=https://vovando.dev/avatar.png alt=avatar></a>
+<a id=branding href=https://vovando.dev/>IT Talks</a></header><nav><a href=/><i class="fas fa-home fa-sm"></i><span>whoami</span></a>
+<a href=/posts><i class="fas fa-keyboard fa-ms"></i><span>blog</span></a>
+<a href=/tags><i class="fas fa-tags fa-ms"></i><span>tags</span></a>
+<a href=https://github.com/vovandodev target=_blank><i class="fab fa-github fa-ms"></i><span>github</span></a>
+<a href=/index.xml><i class="fas fa-rss fa-ms"></i><span>RSS</span></a>
+<a href=/contact><i class="far fa-envelope"></i><span>contact</span></a></nav></aside><main id=main><a href=javascript:void(0) id=closebtn onclick=navToggle()><i class="fas fa-bars fa-lg"></i></a><div class=content><h1 id=title>Upgrading to VMware Virtual SAN 6.0</h1><nav id=TableOfContents></nav><p>Last time I described how to build test environment for vSAN 5.5 on one physical server. Today I want try to update <strong>VMWare vSAN 5.5 to vSAN 6.0.</strong>  After that I will upgrade vSAN in Production.</p><p>So we have our test environment with nested esxi virtual hosts. We have updated hosts and vCenter to 6.0. And see notification on our vSAN cluster.</p><p></p><p> </p><p>There are four steps to the upgrade process:</p><ol><li>Upgrading vCenter Server to 6.0<ul><li>Upgrading the ESXi hosts to 6.0<ul><li><p>Upgrading the on-disk filesystem format from v1 to v2 (VMFS-L to VirstoFS)</p><ul><li>Upgrading the components to v2
+ </li></ul><p>Items 1 & 2 are outside the scope of this post. I think you can do it without any issues. The second thing to consider is how many nodes are in your VSAN cluster. Is it 4 or more, or just 3 nodes? Different options to the command need to be used to upgrade the on-disk format depending on the configuration. <strong>We will work with 3 nodes configuration</strong>.</p><p>From official documentation:</p></li></ul></li></ul></li></ol><p></p><pre><code>        &amp;nbsp;
+        
+        **&lt;font size=&quot;4&quot;&gt;3 node cluster (or insufficient resources). &lt;/font&gt;**
+        
+        **&lt;font size=&quot;3&quot;&gt;So lets start to upgrade the Virtual SAN Disk Format.&lt;/font&gt;**
+        
+        **Procedure**
+        
+        1. Log in to your RVC tool.
+        
+        2. Run the **vsan.disks_stats** /&lt; vCenter IP address or hostname&gt;/&lt;data center
+        
+        name&gt;/computers/&lt;cluster name&gt; command to view the disk status.
+</code></pre><p></p><pre><code>        &lt;p align=&quot;justify&quot;&gt;
+          The command lists the names of all devices and hosts in the Virtual SAN cluster. The command also displays the current disk format and its health status. You can also check the current health of the devices in the&amp;nbsp; Health Status column from the Disk Management page. For example, the device status appears as Unhealthy in the Health Status column for the hosts or disk groups that have failed devices.
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          3. Run the &lt;strong&gt;vsan.v2_ondisk_upgrade &lt;path to vsan cluster&gt;&lt;/strong&gt; command .
+        &lt;/p&gt;
+        
+        For 3 node clusters, and for clusters that do not have the available capacity to do an evacuation of each disk group, the on-disk format can still be upgraded to v2. However the VMs will be unprotected for the duration of the upgrade. If you attempt to upgrade the on-disk format to v2, and there are not enough resources in the cluster, it will fails.
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          An option will need to be added to the upgrade command called &lt;strong&gt;–allow-reduced-redundancy&lt;/strong&gt; to allow the on-disk format to be upgraded:
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;strong&gt;&lt;font size=&quot;3&quot;&gt;vsan.v2_ondisk_upgrade &lt;cluster&gt; &amp;#8211;allow-reduced-redundancy&lt;/font&gt;&lt;/strong&gt;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &amp;nbsp;
+        &lt;/p&gt;
+        
+        This method will not evacuate data to the other hosts in the cluster. This option will simply remove disk group(s), and add the disks back to a v2 format disk group. This is the process it uses:
+</code></pre><p></p><pre><code>        &lt;p align=&quot;justify&quot;&gt;
+          &amp;nbsp;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          4. Monitor the progress in RVC and Web-client
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;img loading=&quot;lazy&quot; title=&quot;Upgrading to VMware Virtual SAN 6.0&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; border=&quot;0&quot; alt=&quot;Upgrading to VMware Virtual SAN 6.0&quot; src=&quot;http://noteits.net/wp-content/uploads/2015/05/Screen-Shot-2015-05-10-at-16.12.56.png&quot; width=&quot;1002&quot; height=&quot;539&quot; /&gt;
+        &lt;/p&gt;
+        
+        RVC upgrades one disk group at a time.
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          Objects will have components going into a degraded state as part of this upgrade process.
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;img loading=&quot;lazy&quot; title=&quot;Upgrading to VMware Virtual SAN 6.0&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; border=&quot;0&quot; alt=&quot;Upgrading to VMware Virtual SAN 6.0&quot; src=&quot;http://noteits.net/wp-content/uploads/2015/05/Screen-Shot-2015-05-10-at-16.14.01.png&quot; width=&quot;1002&quot; height=&quot;444&quot; /&gt;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          This is normal, and the components of the objects will be resynchronized as soon as the on-disk format is upgraded. This can take a bit of time if there are lots of components to resynchronize.
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;img loading=&quot;lazy&quot; title=&quot;Upgrading to VMware Virtual SAN 6.0&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; border=&quot;0&quot; alt=&quot;Upgrading to VMware Virtual SAN 6.0&quot; src=&quot;http://noteits.net/wp-content/uploads/2015/05/Screen-Shot-2015-05-10-at-16.45.40.png&quot; width=&quot;1002&quot; height=&quot;503&quot; /&gt;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          After the disk format upgrade has completed successfully, the following message appears.
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;img loading=&quot;lazy&quot; title=&quot;Upgrading to VMware Virtual SAN 6.0&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; border=&quot;0&quot; alt=&quot;Upgrading to VMware Virtual SAN 6.0&quot; src=&quot;http://noteits.net/wp-content/uploads/2015/05/Screen-Shot-2015-05-10-at-16.17.38.png&quot; width=&quot;649&quot; height=&quot;100&quot; /&gt;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          5. Run the &lt;strong&gt;vsan.obj_status_report&lt;/strong&gt; command to verify that the object versions are upgraded from 1.0 to
+        &lt;/p&gt;
+        
+        2.0.
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &lt;img loading=&quot;lazy&quot; title=&quot;Upgrading to VMware Virtual SAN 6.0&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; border=&quot;0&quot; alt=&quot;Upgrading to VMware Virtual SAN 6.0&quot; src=&quot;http://noteits.net/wp-content/uploads/2015/05/Screen-Shot-2015-05-10-at-16.43.17.png&quot; width=&quot;646&quot; height=&quot;410&quot; /&gt;
+        &lt;/p&gt;
+        
+        &lt;p align=&quot;justify&quot;&gt;
+          &amp;nbsp;
+        &lt;/p&gt;
+        
+        &amp;nbsp;
+        
+        **Verify the Virtual SAN Cluster Upgrade**
+        
+        The Virtual SAN cluster upgrade is not complete until you have verified that you are using the latest version of vSphere and Virtual SAN is available for use. After you finish upgrading the disk format, you must verify whether the Virtual SAN cluster is using the new on-disk format.
+        
+        **Procedure**
+        
+        1. Browse to the Virtual SAN cluster in the vSphere Web Client navigator.
+        
+        2. Click the Manage tab and click **Settings &gt; Virtual SAN &gt; Disk Management**.
+        
+        The disk format version that you are using appears in the Disk Format Version column. For example, if you are using disk format 1.0, it appears as version 1 in the Disk Format Version column. For on-disk format 2.0, the disk format version appears as version 2.
+</code></pre><p></p><pre><code>        &amp;nbsp;
+        
+        There is a detailed step-by-step upgrade process in the &lt;a href=&quot;https://www.vmware.com/support/pubs/virtual-san-pubs.html&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;VSAN 6.0 Administrator&amp;#8217;s Guide&lt;/a&gt;. Strongly recommended to read it before start. Also some possible issues in the [VSAN 6.0 Troubleshooting Reference Manual][1].
+</code></pre><div class=nav-next-prev><div class=nav-prev><a href=https://vovando.dev/2015/05/07/upgrade-esxi-to-6-0-with-vmware-update-manager/><i class="fas fa-chevron-left"></i></a></div><a class=nav-top href=#>top</i></a><div class=nav-next><a href=https://vovando.dev/2015/05/12/configure-ntp-client-on-centos/><i class="fas fa-chevron-right"></i></a></div></div></div><footer><div class=footer-content><div class=contact-info><div class=footer-mail><i class="far fa-envelope"></i><a href=mailto:hello@vovando.dev>hello@vovando.dev</a></div><div class=footer-phone><i class="fas fa-phone"></i>7777</div></div><p class="copyright meta">Copyright © 2013–2020, all rights reserved.</p></div></footer></main></body><script src=https://vovando.dev/js/navbutton.js></script></html>

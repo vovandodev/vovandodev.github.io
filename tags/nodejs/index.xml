@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nodejs on IT Talks</title><link>https://vovando.dev/tags/nodejs/</link><description>Recent content in nodejs on IT Talks</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Copyright © 2013–2020, all rights reserved.</copyright><lastBuildDate>Tue, 05 Jul 2016 14:38:18 +0000</lastBuildDate><atom:link href="https://vovando.dev/tags/nodejs/index.xml" rel="self" type="application/rss+xml"/><item><title>Solving npm error: Cannot find module ‘are-we-there-yet’</title><link>https://vovando.dev/2016/07/05/solving-npm-error-cannot-find-module-are-we-there-yet/</link><pubDate>Tue, 05 Jul 2016 14:38:18 +0000</pubDate><guid>https://vovando.dev/2016/07/05/solving-npm-error-cannot-find-module-are-we-there-yet/</guid><description>&lt;h1 id="problem">&lt;strong>Problem&lt;/strong>&lt;/h1>
+&lt;p>{#problem}&lt;/p>
+&lt;p>&lt;code># &amp;lt;strong&amp;gt;npm install cordova-ios&amp;lt;/strong&amp;gt;&lt;/code>&lt;/p>
+&lt;p>&lt;code>module.js:340 throw err; ^ Error: Cannot find module &amp;amp;#39;are-we-there-yet&amp;amp;#39;&lt;/code>&lt;/p>
+&lt;p>&lt;code>at Function.Module._resolveFilename (module.js:338:15) at&lt;/code>&lt;/p>
+&lt;p>&lt;code>Function.Module._load (module.js:280:25) at Module.require&lt;/code>&lt;/p>
+&lt;p>&lt;code>(module.js:364:17) at require (module.js:380:17) at Object.&amp;lt;anonymous&amp;gt;&lt;/code>&lt;/p>
+&lt;p>&lt;code>(/usr/local/lib/node_modules/npm/node_modules/npmlog/log.js:2:16)&lt;/code>&lt;/p>
+&lt;p>&lt;code>at Module._compile (module.js:456:26) at Object.Module._extensions..js&lt;/code>&lt;/p>
+&lt;p>&lt;code>(module.js:474:10) at Module.load (module.js:356:32) at&lt;/code>&lt;/p>
+&lt;p>&lt;code>Function.Module._load (module.js:312:12) at Module.require (module.js:364:17)&lt;/code>&lt;/p></description></item></channel></rss>

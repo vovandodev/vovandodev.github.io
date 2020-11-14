@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>puppet on IT Talks</title><link>https://vovando.dev/tags/puppet/</link><description>Recent content in puppet on IT Talks</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Copyright © 2013–2020, all rights reserved.</copyright><lastBuildDate>Tue, 14 Apr 2015 20:09:48 +0000</lastBuildDate><atom:link href="https://vovando.dev/tags/puppet/index.xml" rel="self" type="application/rss+xml"/><item><title>Execute bash script by puppet</title><link>https://vovando.dev/2015/04/14/execute-bash-script-by-puppet/</link><pubDate>Tue, 14 Apr 2015 20:09:48 +0000</pubDate><guid>https://vovando.dev/2015/04/14/execute-bash-script-by-puppet/</guid><description>&lt;p>We need to execute bash script on several servers. To do it manually – bad idea. But we have puppet. Lets make it by puppet.&lt;/p>
+&lt;ul>
+&lt;li>Create bash script name.sh.&lt;/li>
+&lt;li>Create new manifest and apply it to our servers:&lt;/li>
+&lt;/ul></description></item></channel></rss>
